@@ -1,0 +1,23 @@
+[
+  {
+    "id": "acme-corp",
+    "connection": {
+      "DATABASE_URL": "postgres://localhost/acme_db",
+      "DB_DATABASE": "acme_billing"
+    }
+  },
+  {
+    "id": "globex-inc",
+    "connection": {
+      "DATABASE_URL": "postgres://localhost/globex_db",
+      "DB_DATABASE": "globex_billing"
+    }
+  },
+  {
+    "id": "initech-llc",
+    "connection": {
+      "DATABASE_URL": "postgres://localhost/initech_db",
+      "DB_DATABASE": "initech_billing"
+    }
+  }
+]

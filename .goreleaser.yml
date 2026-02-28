@@ -1,0 +1,102 @@
+project_name: migra
+
+before:
+  hooks:
+    - go mod tidy
+    - go mod download
+
+builds:
+  - id: migra
+    main: ./cmd/migra
+    binary: migra
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w
+      - -X github.com/migra/migra/pkg/migra.Version={{.Version}}
+      - -X github.com/migra/migra/pkg/migra.BuildTime={{.Date}}
+
+archives:
+  - id: migra
+    format: tar.gz
+    name_template: >-
+      {{ .ProjectName }}_
+      {{- .Version }}_
+      {{- title .Os }}_
+      {{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else }}{{ .Arch }}{{ end }}
+    format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - LICENSE
+      - README.md
+
+checksum:
+  name_template: 'checksums.txt'
+
+snapshot:
+  name_template: "{{ incpatch .Version }}-next"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - '^chore:'
+      - 'README'
+      - 'typo'
+
+release:
+  github:
+    owner: migra
+    name: migra
+  draft: false
+  prerelease: auto
+  name_template: "v{{.Version}}"
+
+dockers:
+  - image_templates:
+      - "migra/migra:{{ .Version }}-amd64"
+      - "migra/migra:latest-amd64"
+    use: buildx
+    dockerfile: Dockerfile
+    build_flag_templates:
+      - "--platform=linux/amd64"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+    
+  - image_templates:
+      - "migra/migra:{{ .Version }}-arm64"
+      - "migra/migra:latest-arm64"
+    use: buildx
+    goarch: arm64
+    dockerfile: Dockerfile
+    build_flag_templates:
+      - "--platform=linux/arm64"
+      - "--label=org.opencontainers.image.created={{.Date}}"
+      - "--label=org.opencontainers.image.title={{.ProjectName}}"
+      - "--label=org.opencontainers.image.revision={{.FullCommit}}"
+      - "--label=org.opencontainers.image.version={{.Version}}"
+
+docker_manifests:
+  - name_template: "migra/migra:{{ .Version }}"
+    image_templates:
+      - "migra/migra:{{ .Version }}-amd64"
+      - "migra/migra:{{ .Version }}-arm64"
+  
+  - name_template: "migra/migra:latest"
+    image_templates:
+      - "migra/migra:latest-amd64"
+      - "migra/migra:latest-arm64"

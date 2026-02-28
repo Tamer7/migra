@@ -1,0 +1,12 @@
+# Minimal config with auto-discovery
+discovery:
+  enabled: true
+  root: ./services
+
+execution:
+  strategy: sequential
+  stop_on_failure: true
+
+logging:
+  level: info
+  format: console

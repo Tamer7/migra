@@ -1,0 +1,32 @@
+# Migra Configuration Example
+
+services:
+  - name: example-service
+    type: django  # django, laravel, or prisma
+    path: ./services/example
+    # env is optional - inherits from parent process
+
+execution:
+  strategy: sequential  # sequential or parallel
+  stop_on_failure: true
+
+logging:
+  level: info  # debug, info, warn, error
+  format: console  # console or json
+
+# Optional: Auto-discover services
+# discovery:
+#   enabled: true
+#   root: ./services
+
+# Optional: Multi-tenant configuration
+# tenancy:
+#   enabled: true
+#   mode: database_per_tenant
+#   tenant_source: env  # env, file, or command
+#   stop_on_failure: false
+#   max_parallel: 10
+
+# Optional: Global environment (inherited by all services)
+# global_env:
+#   APP_ENV: production

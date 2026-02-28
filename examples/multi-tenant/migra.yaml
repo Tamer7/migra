@@ -1,0 +1,23 @@
+services:
+  - name: core
+    type: django
+    path: ./services/core
+
+  - name: billing
+    type: laravel
+    path: ./services/billing
+
+execution:
+  strategy: sequential
+  stop_on_failure: true
+
+tenancy:
+  enabled: true
+  mode: database_per_tenant
+  tenant_source: file
+  stop_on_failure: false
+  max_parallel: 10
+
+logging:
+  level: info
+  format: console

@@ -1,0 +1,18 @@
+services:
+  - name: api
+    type: django
+    path: ./services/api
+
+  - name: web
+    type: laravel
+    path: ./services/web
+    env:
+      DB_CONNECTION: mysql
+
+execution:
+  strategy: sequential
+  stop_on_failure: true
+
+logging:
+  level: info
+  format: console
