@@ -62,27 +62,30 @@ func TestStateManager(t *testing.T) {
 	})
 
 	t.Run("state file atomicity", func(t *testing.T) {
-		manager := NewManager(tmpDir)
+		// Use a fresh subdirectory to avoid interference from previous tests
+		atomicDir := filepath.Join(tmpDir, "atomic-test")
+		manager := NewManager(atomicDir)
 		err := manager.Load()
 		require.NoError(t, err)
 
-		// Record multiple executions
+		// Record exactly 5 executions
 		for i := 0; i < 5; i++ {
 			err = manager.RecordServiceExecution("test-service", true, time.Second, nil)
 			assert.NoError(t, err)
 		}
 
 		// Verify state file exists and is valid
-		stateFile := filepath.Join(tmpDir, ".migra", "state.json")
+		stateFile := filepath.Join(atomicDir, ".migra", "state.json")
 		_, err = os.Stat(stateFile)
 		assert.NoError(t, err)
 
-		// Load state again
-		manager2 := NewManager(tmpDir)
+		// Load state in a new manager instance
+		manager2 := NewManager(atomicDir)
 		err = manager2.Load()
 		require.NoError(t, err)
 
 		state := manager2.GetState()
+		// Should have exactly 5 successful executions
 		assert.Equal(t, 5, state.Services["test-service"].SuccessCount)
 	})
 }
