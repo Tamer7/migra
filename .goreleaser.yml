@@ -67,8 +67,8 @@ release:
 
 dockers:
   - image_templates:
-      - "migra/migra:{{ .Version }}-amd64"
-      - "migra/migra:latest-amd64"
+      - "tamerjar/migra:{{ .Version }}-amd64"
+      - "tamerjar/migra:latest-amd64"
     use: buildx
     dockerfile: Dockerfile
     build_flag_templates:
@@ -77,10 +77,10 @@ dockers:
       - "--label=org.opencontainers.image.title={{.ProjectName}}"
       - "--label=org.opencontainers.image.revision={{.FullCommit}}"
       - "--label=org.opencontainers.image.version={{.Version}}"
-    
+
   - image_templates:
-      - "migra/migra:{{ .Version }}-arm64"
-      - "migra/migra:latest-arm64"
+      - "tamerjar/migra:{{ .Version }}-arm64"
+      - "tamerjar/migra:latest-arm64"
     use: buildx
     goarch: arm64
     dockerfile: Dockerfile
@@ -92,12 +92,12 @@ dockers:
       - "--label=org.opencontainers.image.version={{.Version}}"
 
 docker_manifests:
-  - name_template: "migra/migra:{{ .Version }}"
+  - name_template: "tamerjar/migra:{{ .Version }}"
     image_templates:
-      - "migra/migra:{{ .Version }}-amd64"
-      - "migra/migra:{{ .Version }}-arm64"
-  
-  - name_template: "migra/migra:latest"
+      - "tamerjar/migra:{{ .Version }}-amd64"
+      - "tamerjar/migra:{{ .Version }}-arm64"
+
+  - name_template: "tamerjar/migra:latest"
     image_templates:
-      - "migra/migra:latest-amd64"
-      - "migra/migra:latest-arm64"
+      - "tamerjar/migra:latest-amd64"
+      - "tamerjar/migra:latest-arm64"
