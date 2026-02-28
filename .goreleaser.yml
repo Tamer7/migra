@@ -58,9 +58,6 @@ changelog:
       - 'typo'
 
 release:
-  github:
-    owner: migra
-    name: migra
   draft: false
   prerelease: auto
   name_template: "v{{.Version}}"
