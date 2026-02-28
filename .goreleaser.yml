@@ -62,6 +62,26 @@ release:
   prerelease: auto
   name_template: "v{{.Version}}"
 
+brews:
+  - name: migra
+    repository:
+      owner: Tamer7
+      name: homebrew-tap
+      token: "{{ .Env.TAP_GITHUB_TOKEN }}"
+    homepage: "https://github.com/Tamer7/migra"
+    description: "A CLI tool for orchestrating database migrations across microservices."
+    license: "MIT"
+
+scoops:
+  - name: migra
+    repository:
+      owner: Tamer7
+      name: scoop-bucket
+      token: "{{ .Env.TAP_GITHUB_TOKEN }}"
+    homepage: "https://github.com/Tamer7/migra"
+    description: "A CLI tool for orchestrating database migrations across microservices."
+    license: "MIT"
+
 dockers:
   - image_templates:
       - "tamerjar/migra:{{ .Version }}-amd64"
